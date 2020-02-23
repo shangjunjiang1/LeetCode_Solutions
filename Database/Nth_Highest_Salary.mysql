@@ -1,0 +1,10 @@
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      select t.salary from 
+      (select t1.salary, @curRank := @curRank + 1 as rank
+      from (select distinct salary from Employee) t1, (SELECT @curRank := 0) r
+      order by salary desc) t 
+      where t.rank = N
+  );
+END
